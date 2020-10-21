@@ -1,18 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-	<meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Document</title>
-	<link rel="stylesheet" href="assets/css/bootstrap.css">
-	<link rel="stylesheet" href="assets/css/styles.css">
-	<script src="assets/js/jquery.js"></script>
-	<script src="assets/js/bootstrap.js"></script>
-	<script src="assets/js/scripts.js"></script>
-</head>
-<body>
-
-<div class="container">
+<?php 
+  include 'includes/header.php';
+  include 'includes/footer.php';
+?>
     <div class="row">
 				<div class="col-lg-6 col-lg-offset-3 col-md-6 col-md-offset-3">
 					<div class="alert-placeholder">
@@ -49,6 +38,3 @@
 					</div>
 				</div>
 			</div>
-	</div>
-</body>
-</html>
