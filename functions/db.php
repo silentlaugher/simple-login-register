@@ -1,6 +1,10 @@
 <?php 
     $con = mysqli_connect('localhost', 'root', '', 'simple-login-registration');
 
+    function row_count($result){
+        return mysqli_num_rows($result);
+    }
+
     function escape($string) {
         global $con;
         return mysqli_real_escape_string($con, $string); 
