@@ -29,12 +29,23 @@
         return $token;
     }
 
+    function validation_errors($error_message) {
+        $error_message = <<<DELIMITER
+        <div class="alert alert-danger alert-dismissible" role="alert">
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <strong>Warning!</strong> $error_message
+         </div>
+        DELIMITER;
+        return $error_message;
+        }
+
             /* VALIDATION FUNCTIONS*/
 
     function validate_user_registration(){
         $errors = [];
         $min = 2;
         $max = 40;
+        $password_min = 8;
 
         if($_SERVER['REQUEST_METHOD'] == "POST"){
             $first_name = clean($_POST['first_name']);
@@ -53,7 +64,7 @@
             }
 
             if(empty($first_name)){
-                $errors[] = "Your first name cannot be empty";
+                $errors[] = "Your first name field cannot be empty";
             }
 
             if(strlen($last_name) < $min){
@@ -65,7 +76,7 @@
             }
 
             if(empty($last_name)){
-                $errors[] = "Your last name cannot be empty";
+                $errors[] = "Your last name field cannot be empty";
             }
 
             if(strlen($username) < $min){
@@ -77,26 +88,37 @@
             }
 
             if(empty($username)){
-                $errors[] = "Your username cannot be empty";
+                $errors[] = "Your username field cannot be empty";
+            }
+
+            if(strlen($email) > $max){
+                $errors[] = "Your email cannot be more than {$max} characters";
             }
 
             if(empty($email)){
-                $errors[] = "Your email cannot be empty";
+                $errors[] = "Your email field cannot be empty";
+            }
+
+            if(strlen($password) < $password_min){
+                $errors[] = "Your password cannot be less than {$password_min} characters";
+            }
+
+            if($password !== $confirm_password) {
+
+                $errors[] = "Your password fields do not match";
+    
+            }if(empty($password)){
+                $errors[] = "Your password field cannot be empty";
+            }
+
+            }if(empty($confirm_password)){
+            $errors[] = "Your confirm password field cannot be empty";
             }
 
             if(!empty($errors)) {
                 foreach ($errors as $error) {
-                    $message = <<<DELIMITER
-
-<div class="alert alert-danger alert-dismissible" role="alert">
-  	<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-  	<strong>Warning!</strong> $error
-</div>
-DELIMITER;
-
-echo $message;
-
-                }
+                    echo validation_errors($error);
+                
             }
         }
     }
