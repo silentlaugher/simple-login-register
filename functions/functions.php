@@ -68,9 +68,34 @@
                 $errors[] = "Your last name cannot be empty";
             }
 
+            if(strlen($username) < $min){
+                $errors[] = "Your username cannot be less than {$min} characters";
+            }
+
+            if(strlen($username) > $max){
+                $errors[] = "Your username cannot be more than {$max} characters";
+            }
+
+            if(empty($username)){
+                $errors[] = "Your username cannot be empty";
+            }
+
+            if(empty($email)){
+                $errors[] = "Your email cannot be empty";
+            }
+
             if(!empty($errors)) {
                 foreach ($errors as $error) {
-                    echo $error
+                    $message = <<<DELIMITER
+
+<div class="alert alert-danger alert-dismissible" role="alert">
+  	<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+  	<strong>Warning!</strong> $error
+</div>
+DELIMITER;
+
+echo $message;
+
                 }
             }
         }
