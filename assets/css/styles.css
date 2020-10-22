@@ -54,7 +54,7 @@ body {
 	border-color: #ccc;
 }
 .btn-login {
-	background-color: #59B2E0;
+	background-color: #0275d8;
 	outline: none;
 	color: #fff;
 	font-size: 14px;
@@ -62,7 +62,7 @@ body {
 	font-weight: normal;
 	padding: 14px 0;
 	text-transform: uppercase;
-	border-color: #59B2E6;
+	border-color: #0275d8;
 }
 .btn-login:hover,
 .btn-login:focus {

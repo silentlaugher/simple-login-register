@@ -83,10 +83,24 @@
             $sql.= " VALUES('$first_name','$last_name','$username','$email','$password','$validation_code', 0)";
             $result = query($sql);
             confirm($result);
-            
+            $subject = "Activate Account";
+		    $msg = " Please click the link below to activate your Account
+		    <a href=\" " . Config::DEVELOPMENT_URL ."/activate.php?email=$email&code=$validation_code\">LINK HERE</a>";
+		    $headers = "From: noreply@edynakdemo.com";
+		    send_email($email, $subject, $msg, $headers);
+
             return true;
+
         }
+    }else{
+        return false;
     }
+
+    function send_email($email, $subject, $msg, $headers){
+       return mail($email, $subject, $msg, $headers);
+
+    }
+
             /* VALIDATION FUNCTIONS*/
 
     function validate_user_registration(){
