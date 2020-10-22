@@ -150,11 +150,10 @@
                 foreach ($errors as $error) {
                     echo validation_errors($error);    
                 }
-                
+
             } // POST request
-    
-        } // function 
-            /****************Register user functions ********************/
+
+        } /*Register user functions */
     
     function register_user($first_name, $last_name, $username, $email, $password) {
         $first_name = escape($first_name);
@@ -175,4 +174,5 @@
 
             $sql = "INSERT INTO users(first_name, last_name, username, email, password, validation_code, 0)";
         }
+    }
 ?>
