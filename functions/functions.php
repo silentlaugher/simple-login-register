@@ -61,7 +61,32 @@
             return false;
         }
     }
+    
+    function register_user($first_name, $last_name, $username, $email, $password) {
+        $first_name = escape($first_name);
+        $last_name  = escape($last_name);
+        $username   = escape($username);
+        $email      = escape($email);
+        $password   = escape($password);
+    
+        if(email_exists($email)) {
+            return false;
+    
+        } else if (username_exists($username)) {
+            return false;
 
+        }else{
+            $password = password_hash($password, PASSWORD_BCRYPT, array('cost'=>12));
+            $validation_code = md5($username . microtime());
+
+            $sql = "INSERT INTO users(first_name, last_name, username, email, password, validation_code, active)";
+            $sql.= " VALUES('$first_name','$last_name','$username','$email','$password','$validation_code', 0)";
+            $result = query($sql);
+            confirm($result);
+            
+            return true;
+        }
+    }
             /* VALIDATION FUNCTIONS*/
 
     function validate_user_registration(){
@@ -151,28 +176,14 @@
                     echo validation_errors($error);    
                 }
 
-            } // POST request
+            } else {
 
+                if(register_user($first_name, $last_name, $username, $email, $password)) {
+
+                    echo "User Registered";
+            }
+                
         } /*Register user functions */
-    
-    function register_user($first_name, $last_name, $username, $email, $password) {
-        $first_name = escape($first_name);
-        $last_name  = escape($last_name);
-        $username   = escape($username);
-        $email      = escape($email);
-        $password   = escape($password);
-    
-        if(email_exists($email)) {
-            return false;
-    
-        } else if (username_exists($username)) {
-            return false;
-
-        }else{
-            $password = password_hash($password, PASSWORD_BCRYPT, array('cost'=>12));
-            $validation_code = md5($username . microtime());
-
-            $sql = "INSERT INTO users(first_name, last_name, username, email, password, validation_code, 0)";
-        }
     }
+
 ?>
