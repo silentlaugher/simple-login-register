@@ -41,7 +41,7 @@
 
 
     function email_exists($email){
-        $sql = "SELECT id FROM users WHERE email = '$email'";
+        $sql = "SELECT user_id FROM users WHERE email = '$email'";
         $result = query($sql);
 
         if(row_count($result) == 1 ){
@@ -52,7 +52,7 @@
     }
 
     function username_exists($username){
-        $sql = "SELECT id FROM users WHERE username = '$username'";
+        $sql = "SELECT user_id FROM users WHERE username = '$username'";
         $result = query($sql);
 
         if(row_count($result) == 1 ){
@@ -148,9 +148,31 @@
 
             if(!empty($errors)) {
                 foreach ($errors as $error) {
-                    echo validation_errors($error);
+                    echo validation_errors($error);    
+                }
                 
-            }
+            } // POST request
+    
+        } // function 
+            /****************Register user functions ********************/
+    
+    function register_user($first_name, $last_name, $username, $email, $password) {
+        $first_name = escape($first_name);
+        $last_name  = escape($last_name);
+        $username   = escape($username);
+        $email      = escape($email);
+        $password   = escape($password);
+    
+        if(email_exists($email)) {
+            return false;
+    
+        } else if (username_exists($username)) {
+            return false;
+
+        }else{
+            $password = password_hash($password, PASSWORD_BCRYPT, array('cost'=>12));
+            $validation_code = md5($username . microtime());
+
+            $sql = "INSERT INTO users(first_name, last_name, username, email, password, validation_code, 0)";
         }
-    }
 ?>
