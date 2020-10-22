@@ -1,6 +1,5 @@
 <?php 
   include 'functions/init.php';
-  include 'functions/functions.php';
   include 'includes/header.php';
   include 'includes/nav.php';
   include 'includes/footer.php';
@@ -8,12 +7,8 @@
 
 <div class="row">
 	<div class="col-lg-6 col-lg-offset-3">
-
-							
+		<?php validate_user_registration(); ?>						
 	</div>
-
-
-
 </div>
 	<div class="row">
 		<div class="col-md-6 col-md-offset-3">
@@ -33,6 +28,14 @@
 					<div class="row">
 						<div class="col-lg-12">
 							<form id="register-form" method="post" role="form" >
+
+								<div class="form-group">
+									<input type="text" name="first_name" id="first_name" tabindex="1" class="form-control" placeholder="First Name" value="" required >
+								</div>
+
+								<div class="form-group">
+									<input type="text" name="last_name" id="last_name" tabindex="1" class="form-control" placeholder="Last Name" value="" required >
+								</div>
 
 								<div class="form-group">
 									<input type="text" name="username" id="username" tabindex="1" class="form-control" placeholder="Username" value="" required >
