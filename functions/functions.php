@@ -5,7 +5,7 @@
         return htmlentities($string);
     }
 
-    function redirect(){
+    function redirect($location){
         return header("Location: {$location}");
     }
 
@@ -41,7 +41,7 @@
 
 
     function email_exists($email){
-        $sql = "SELECT id FROM users WHERE email = '$email'";
+        $sql = "SELECT user_id FROM users WHERE email = '$email'";
         $result = query($sql);
 
         if(row_count($result) == 1 ){
@@ -52,7 +52,7 @@
     }
 
     function username_exists($username){
-        $sql = "SELECT id FROM users WHERE username = '$username'";
+        $sql = "SELECT user_id FROM users WHERE username = '$username'";
         $result = query($sql);
 
         if(row_count($result) == 1 ){
@@ -60,6 +60,45 @@
         }else{
             return false;
         }
+    }
+    
+    function register_user($first_name, $last_name, $username, $email, $password) {
+        $first_name = escape($first_name);
+        $last_name  = escape($last_name);
+        $username   = escape($username);
+        $email      = escape($email);
+        $password   = escape($password);
+    
+        if(email_exists($email)) {
+            return false;
+    
+        } else if (username_exists($username)) {
+            return false;
+
+        }else{
+            $password = password_hash($password, PASSWORD_BCRYPT, array('cost'=>12));
+            $validation_code = md5($username . microtime());
+
+            $sql = "INSERT INTO users(first_name, last_name, username, email, password, validation_code, active)";
+            $sql.= " VALUES('$first_name','$last_name','$username','$email','$password','$validation_code', 0)";
+            $result = query($sql);
+            confirm($result);
+            $subject = "Activate Account";
+		    $msg = " Please click the link below to activate your Account
+		    <a href=\" " . Config::DEVELOPMENT_URL ."/activate.php?email=$email&code=$validation_code\">LINK HERE</a>";
+		    $headers = "From: noreply@edynakdemo.com";
+		    send_email($email, $subject, $msg, $headers);
+
+            return true;
+
+        }
+    }else{
+        return false;
+    }
+
+    function send_email($email, $subject, $msg, $headers){
+       return mail($email, $subject, $msg, $headers);
+
     }
 
             /* VALIDATION FUNCTIONS*/
@@ -148,9 +187,18 @@
 
             if(!empty($errors)) {
                 foreach ($errors as $error) {
-                    echo validation_errors($error);
-                
+                    echo validation_errors($error);    
+                }
+
+            } else {
+
+                if(register_user($first_name, $last_name, $username, $email, $password)) {
+                    set_message("<p class='bg-success text-center'>Success! Please check your email or spam folder for an activation link</p>");
+				    redirect("index.php");
+
             }
-        }
+                
+        } 
     }
+
 ?>
