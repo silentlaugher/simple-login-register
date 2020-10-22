@@ -5,7 +5,7 @@
         return htmlentities($string);
     }
 
-    function redirect(){
+    function redirect($location){
         return header("Location: {$location}");
     }
 
@@ -179,11 +179,12 @@
             } else {
 
                 if(register_user($first_name, $last_name, $username, $email, $password)) {
+                    set_message("<p class='bg-success text-center'>Success! Please check your email or spam folder for an activation link</p>");
+				    redirect("index.php");
 
-                    echo "User Registered";
             }
                 
-        } /*Register user functions */
+        } 
     }
 
 ?>
