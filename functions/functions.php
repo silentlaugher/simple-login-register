@@ -39,6 +39,29 @@
         return $error_message;
         }
 
+
+    function email_exists($email){
+        $sql = "SELECT id FROM users WHERE email = '$email'";
+        $result = query($sql);
+
+        if(row_count($result) == 1 ){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    function username_exists($username){
+        $sql = "SELECT id FROM users WHERE username = '$username'";
+        $result = query($sql);
+
+        if(row_count($result) == 1 ){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
             /* VALIDATION FUNCTIONS*/
 
     function validate_user_registration(){
@@ -79,6 +102,10 @@
                 $errors[] = "Your last name field cannot be empty";
             }
 
+            if(username_exists($username)){
+                $errors[] = "Sorry, that username is already in use. Try adding a number to it or you can try a different username";
+            }
+
             if(strlen($username) < $min){
                 $errors[] = "Your username cannot be less than {$min} characters";
             }
@@ -89,6 +116,10 @@
 
             if(empty($username)){
                 $errors[] = "Your username field cannot be empty";
+            }
+
+            if(email_exists($email)){
+                $errors[] = "Sorry, that email has already been registered. You can request a new password if necessary";
             }
 
             if(strlen($email) > $max){
